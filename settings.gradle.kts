@@ -1,1 +1,1 @@
-rootProject.name = "demo"
+include("order-service", "payment-service")
