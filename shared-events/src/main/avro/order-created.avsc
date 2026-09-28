@@ -1,0 +1,10 @@
+{
+  "namespace": "com.kafka.events",
+  "type": "record",
+  "name": "OrderCreated",
+  "fields": [
+    {"name": "orderId", "type": "string"},
+    {"name": "product", "type": "string"},
+    {"name": "amount", "type": "double"}
+  ]
+}

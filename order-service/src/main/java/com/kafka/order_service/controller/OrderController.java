@@ -1,6 +1,7 @@
 package com.kafka.order_service.controller;
 
-import com.kafka.order_service.event.OrderCreatedEvent;
+import com.kafka.events.OrderCreated;
+import com.kafka.order_service.dto.OrderRequest;
 import com.kafka.order_service.producer.OrderProducer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public String createOrder(@RequestBody OrderCreatedEvent event) {
+    public String createOrder(@RequestBody OrderRequest req) {
+        OrderCreated event = OrderCreated.newBuilder()
+                .setOrderId(req.getOrderId())
+                .setProduct(req.getProduct())
+                .setAmount(req.getAmount())
+                .build();
         orderProducer.sendOrderCreated(event);
         return "Order sent: " + event.getOrderId();
     }

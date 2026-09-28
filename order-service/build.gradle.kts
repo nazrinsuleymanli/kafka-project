@@ -15,6 +15,8 @@ java {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
+	maven { url = uri("https://packages.confluent.io/maven/") }
 }
 
 dependencies {
@@ -23,6 +25,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-kafka")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("com.fasterxml.jackson.core:jackson-databind")
+	implementation("com.kafka:shared-events:0.0.1")
+	implementation("io.confluent:kafka-avro-serializer:7.4.0")
 	compileOnly("org.projectlombok:lombok:1.18.48")
 	annotationProcessor("org.projectlombok:lombok:1.18.48")
 
