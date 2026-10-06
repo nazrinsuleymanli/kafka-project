@@ -5,6 +5,7 @@
   "fields": [
     {"name": "orderId", "type": "string"},
     {"name": "product", "type": "string"},
-    {"name": "amount", "type": "double"}
+    {"name": "amount", "type": "double"},
+    {"name": "discount", "type": "double", "default": 0.0}
   ]
 }

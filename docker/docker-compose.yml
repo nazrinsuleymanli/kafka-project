@@ -8,6 +8,7 @@ services:
       POSTGRES_DB: orderdb
       POSTGRES_USER: order
       POSTGRES_PASSWORD: order
+    command: ["postgres", "-c", "wal_level=logical"]
 
   payment-db:
     image: postgres:16
@@ -61,24 +62,18 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-
-#  kafka-connect:
-#    image: confluentinc/cp-kafka-connect:7.4.0
-#    container_name: kafka-connect
-#    ports:
-#      - "8083:8083"
-#    depends_on:
-#      - kafka
-#    environment:
-#      CONNECT_BOOTSTRAP_SERVERS: kafka:29092
-#      CONNECT_REST_PORT: 8083
-#      CONNECT_GROUP_ID: "kafka-connect-group"
-#      CONNECT_CONFIG_STORAGE_TOPIC: "connect-configs"
-#      CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
-#      CONNECT_STATUS_STORAGE_TOPIC: "connect-statuses"
-#      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-#      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-#      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-#      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-#      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
-#      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components/"
+  kafka-connect:
+    image: debezium/connect:2.7.3.Final
+    container_name: kafka-connect
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+    environment:
+      BOOTSTRAP_SERVERS: kafka:29092
+      GROUP_ID: connect-cluster
+      CONFIG_STORAGE_TOPIC: connect-configs
+      OFFSET_STORAGE_TOPIC: connect-offsets
+      STATUS_STORAGE_TOPIC: connect-statuses
+      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter

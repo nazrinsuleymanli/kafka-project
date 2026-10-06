@@ -23,6 +23,7 @@ public class OrderController {
         OrderCreated event = OrderCreated.newBuilder()
                 .setOrderId(req.getOrderId())
                 .setProduct(req.getProduct())
+                .setDiscount(100.0)
                 .setAmount(req.getAmount())
                 .build();
         orderProducer.sendOrderCreated(event);
